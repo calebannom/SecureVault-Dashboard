@@ -111,7 +111,7 @@ function TreeNode({ node, depth, isOpen, isSelected, isFocused, onToggle, onSele
       tabIndex={-1}
       style={{
         cursor: 'pointer',
-        padding: '4px 8px',
+        padding: '7px 8px',
         paddingLeft: `${8 + depth * 20}px`,
         color: isFolder ? '#E8EDF2' : '#7C8A9A',
         fontFamily: 'monospace',
