@@ -1,7 +1,6 @@
-import { useState } from 'react'
+import './TreeNode.css'
 
 function TreeNode({ node, depth, isOpen, isSelected, isFocused, onToggle, onSelectFile, focusRef }) {
-  const [isHovered, setIsHovered] = useState(false)
   const isFolder = node.type === 'folder'
 
   const handleClick = () => {
@@ -12,30 +11,20 @@ function TreeNode({ node, depth, isOpen, isSelected, isFocused, onToggle, onSele
     }
   }
 
-  const getBackground = () => {
-    if (isSelected) return '#1F4D4C'
-    if (isHovered) return '#1A222D'
-    return 'transparent'
-  }
+  const classNames = [
+    'tree-node',
+    isFolder ? 'is-folder' : '',
+    isSelected ? 'is-selected' : '',
+    isFocused ? 'is-focused' : '',
+  ].filter(Boolean).join(' ')
 
   return (
     <div
       ref={isFocused ? focusRef : null}
       onClick={handleClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       tabIndex={-1}
-      style={{
-        cursor: 'pointer',
-        padding: '7px 8px',
-        paddingLeft: `${8 + depth * 20}px`,
-        color: isFolder ? '#E8EDF2' : '#7C8A9A',
-        fontFamily: "'JetBrains Mono', monospace",
-        fontSize: '14px',
-        background: getBackground(),
-        borderLeft: isSelected ? '2px solid #3DD9D6' : '2px solid transparent',
-        outline: isFocused ? '1px solid #3DD9D6' : 'none',
-      }}
+      className={classNames}
+      style={{ paddingLeft: '${8 + depth * 20}px' }}
     >
       {isFolder ? (isOpen ? '▾ ' : '▸ ') : '  '}
       {node.name}

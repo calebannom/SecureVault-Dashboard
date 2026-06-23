@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import data from '../data.json'
 import TreeNode from './TreeNode.jsx'
+import Breadcrumb from './Breadcrumb.jsx'
+import './App.css'
 
 function getFileType(filename) {
   const parts = filename.split('.')
@@ -134,47 +136,18 @@ function App() {
   }
 
   return (
-    <div
-      onKeyDown={handleKeyDown}
-      style={{
-        display: 'flex',
-        minHeight: '100vh',
-        background: '#0B0F14',
-        fontFamily: 'monospace'
-      }}
-    >
-      <div style={{
-        width: '320px',
-        background: '#121821',
-        padding: '16px',
-        borderRight: '1px solid #232C38',
-        display: 'flex',
-        flexDirection: 'column'
-      }}>
+    <div onKeyDown={handleKeyDown} className="app">
+      <div className="sidebar">
         <input
           type="text"
           placeholder="Search files..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          style={{
-            background: '#0B0F14',
-            border: '1px solid #232C38',
-            borderRadius: '4px',
-            color: '#E8EDF2',
-            fontFamily: 'monospace',
-            fontSize: '14px',
-            padding: '8px 12px',
-            marginBottom: '16px',
-            outline: 'none',
-          }}
-          onFocus={(e) => e.target.style.borderColor = '#3DD9D6'}
-          onBlur={(e) => e.target.style.borderColor = '#232C38'}
+          className="search-input"
         />
 
         {visibleItems.length === 0 && searchQuery && (
-          <div style={{ color: '#7C8A9A', fontSize: '14px', padding: '8px' }}>
-            No results found
-          </div>
+          <div className="no-results">No results found</div>
         )}
 
         {visibleItems.map((node, index) => (
@@ -192,26 +165,28 @@ function App() {
         ))}
       </div>
 
-      <div style={{ flex: 1, padding: '24px', color: '#7C8A9A' }}>
-        <h2 style={{ color: '#E8EDF2', fontSize: '16px', fontWeight: 500 }}>Properties</h2>
+      <div className="properties-panel">
+        <Breadcrumb data={data} selectedFile={selectedFile} />
+
+        <h2 className="properties-title">Properties</h2>
 
         {selectedFile ? (
-          <div style={{ marginTop: '24px' }}>
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{ fontSize: '12px', color: '#7C8A9A' }}>Name</div>
-              <div style={{ fontSize: '14px', color: '#E8EDF2', marginTop: '4px' }}>{selectedFile.name}</div>
+          <div>
+            <div className="property-group">
+              <div className="property-label">Name</div>
+              <div className="property-value">{selectedFile.name}</div>
             </div>
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{ fontSize: '12px', color: '#7C8A9A' }}>Type</div>
-              <div style={{ fontSize: '14px', color: '#E8EDF2', marginTop: '4px' }}>{getFileType(selectedFile.name)}</div>
+            <div className="property-group">
+              <div className="property-label">Type</div>
+              <div className="property-value">{getFileType(selectedFile.name)}</div>
             </div>
-            <div>
-              <div style={{ fontSize: '12px', color: '#7C8A9A' }}>Size</div>
-              <div style={{ fontSize: '14px', color: '#E8EDF2', marginTop: '4px' }}>{selectedFile.size}</div>
+            <div className="property-group">
+              <div className="property-label">Size</div>
+              <div className="property-value">{selectedFile.size}</div>
             </div>
           </div>
         ) : (
-          <p style={{ marginTop: '16px' }}>Select a file to see its details</p>
+          <p className="properties-empty">Select a file to see its details</p>
         )}
       </div>
     </div>
