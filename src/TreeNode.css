@@ -1,0 +1,26 @@
+.tree-node {
+  cursor: pointer;
+  padding: 7px 8px;
+  color: #7C8A9A;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  border-left: 2px solid transparent;
+  transition: background 0.15s ease;
+}
+
+.tree-node.is-folder {
+  color: #E8EDF2;
+}
+
+.tree-node:hover {
+  background: #1A222D;
+}
+
+.tree-node.is-selected {
+  background: #1F4D4C;
+  border-left: 2px solid #3DD9D6;
+}
+
+.tree-node.is-focused {
+  outline: 1px solid #3DD9D6;
+}
