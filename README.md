@@ -21,30 +21,35 @@ npm run dev
 Open http://localhost:5173 in your browser.
 
 Tech Stack
- *React 18
- *Vite 5
- *Vanilla CSS (no component libraries)
+*React 18
+*Vite 5
+*Vanilla CSS (no component libraries)
 
 Recursive Strategy
 The folder structure from data.json is processed using a recursive flattenVisible() function in App.jsx. This function traverses the nested JSON tree depth-first, collecting only currently visible nodes (respecting which folders are open or closed) into a flat array for rendering.
 This approach separates the recursive data-processing logic from the rendering layer, which enables flat keyboard navigation (Up/Down arrows moving linearly through visible items) across arbitrarily deep folder structures. The strategy was stress-tested to 20 levels of nesting without any UI breakdown or performance issues.
 
-Wildcard Feature: Search with Auto-Expand
-Inovation-Clause Feature: A live search bar that filters the file tree and automatically expands parent folders to reveal matching results.
+Wildcard Feature: Breadcrumb Trail
+Feature: When a file is selected, a breadcrumb trail appears showing the full folder path from root to the selected file (e.g. 01_Legal_Department > Active_Cases > Doe_vs_MegaCorp > Case_Summary_Draft_v3.docx).
 
-Why I chose this: SecureVault's primary users are lawyers and compliance officers managing thousands of deeply nested case files. Without search, finding a specific document requires manually clicking through multiple folder levels — a slow, frustrating experience for power users under time pressure.
+The gap I identified: The requirements specified file selection and a Properties Panel showing Name, Type, and Size — but provided no way for users to understand where in the folder hierarchy a selected file lives. For a law firm with thousands of deeply nested case files, a user who selects a file has zero positional context unless they manually trace back up the tree.
 
-Business value: This feature directly addresses the core problem statement: making nested files easy to navigate. A lawyer searching "deposition" or "contract" instantly sees every matching file across all departments, with the exact folder path auto-expanded for context. This reduces file-finding time from minutes to seconds, which is measurable productivity value for a billable-hour profession.
+Business value: Lawyers and compliance officers work under time pressure with billable hours. Knowing that a file lives under Legal → Smith_Estate_Dispute → Correspondence vs Legal → Doe_vs_MegaCorp → Discovery_Phase is critical context — not just a nice-to-have. The breadcrumb eliminates the need to mentally reconstruct the path, reducing navigation cognitive load and file management errors.
 
-Implementation: The filterTree() and nodeMatches() functions recursively traverse the full data tree on every keystroke, collecting IDs of folders that contain matches. These IDs are merged with the user's manually-opened folders to produce effectiveOpenIds — the set of folders that should appear open during a search. Clearing the search restores the original tree state.
+Implementation: The findPath() function in Breadcrumb.jsx uses depth-first recursive search to traverse the full data tree and reconstruct the ancestor chain from root to the selected node. The last item in the path is highlighted in cyan (#3DD9D6) to distinguish the selected file from its parent folders.
+
+Bonus Feature: Search with Auto-Expand
+A live search bar filters the file tree and automatically expands parent folders to reveal matching results. Typing "payroll" instantly surfaces all payroll-related files across any depth, with the exact folder path auto-expanded for context. Clearing the search restores the original tree state.
 
 Features
- *Recursive folder tree rendering from JSON (handles arbitrary nesting depth)
- *Expand/collapse folders on click
- *File selection with distinct visual state (cyan highlight + left border accent)
- *Properties Panel showing Name, Type, and Size of selected file
- *Full keyboard navigation: Up/Down to move focus, Right to expand, Left to collapse, Enter to select
- *Live search with automatic folder expansion to reveal matches
- *"No results found" state for empty searches
- *Dark mode design system: cyber-secure aesthetic using JetBrains Mono + Inter typefaces
+Recursive folder tree rendering from JSON (handles arbitrary nesting depth)
+Expand/collapse folders on click
+File selection with distinct visual state (cyan highlight + left border accent)
+Properties Panel showing Name, Type, and Size of selected file
+Breadcrumb trail showing full path to selected file
+Full keyboard navigation: Up/Down to move focus, Right to expand, Left to collapse, Enter to select
+Live search with automatic folder expansion to reveal matches
+Hover state on tree items
+Dark mode design system: cyber-secure aesthetic using JetBrains Mono + Inter typefaces
+
 ```
